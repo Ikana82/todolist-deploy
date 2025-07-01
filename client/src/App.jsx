@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      async function fetchTodos() {
+        try {
+          const response = await fetch("http://localhost:3000/todos", {
+            method: "GET",
+          });
+          const result = await response.json();
+          console.log(result);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      fetchTodos();
+    }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="navbar bg-base-100 shadow-sm">
+        <a className="btn btn-ghost text-xl">TODO App</a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="flex w-full flex-col lg:flex-row px-3">
+        <div className="card bg-base-300 rounded-box grid h-32 grow place-items-center">
+          Form
+        </div>
+        <div className="divider lg:divider-horizontal"></div>
+        <div className="card bg-base-300 rounded-box grid h-32 grow place-items-center">
+          Content React
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
