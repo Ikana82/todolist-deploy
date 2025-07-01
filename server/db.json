@@ -1,0 +1,20 @@
+{
+    "todos": [
+        {
+            "id": "1",
+            "task": "Reading",
+            "status": "OPEN"
+        },
+        {
+            "id": "2",
+            "task": "Swimming",
+            "status": "ONGOING"
+        },
+        {
+            "id": "3",
+            "task": "Watching",
+            "status": "COMPLETED"
+        }
+
+    ]
+}
