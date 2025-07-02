@@ -35,6 +35,8 @@ function App() {
         method: "POST",
         body: JSON.stringify(newTodo),
       })
+      // fetch data lagi
+      // setTodo lagi dengan data terbaru
       console.log(newTodo); // {}
       console.log(todos); // []
       setTodos([...todos, newTodo]);
