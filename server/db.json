@@ -14,11 +14,6 @@
       "id": "3",
       "task": "Watching",
       "status": "COMPLETED"
-    },
-    {
-      "id": "4",
-      "task": "Teaching",
-      "status": "ONGOING"
     }
   ]
 }
