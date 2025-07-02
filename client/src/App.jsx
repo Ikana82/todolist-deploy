@@ -4,11 +4,13 @@ import TodoCard from "./components/TodoCard";
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [task, setTask] = useState("");
+  const [status, setStatus] = useState("OPEN");
 
   useEffect(() => {
     async function fetchTodos() {
       try {
-        const response = await fetch("http://localhost:3000/todos", {
+        const response = await fetch(`http://localhost:3000/todos`, {
           method: "GET",
         });
         const result = await response.json();
@@ -21,6 +23,23 @@ function App() {
     fetchTodos();
   }, []);
 
+   async function createTodo(event) {
+      event.preventDefault();
+      console.log(task, status);
+      const newTodo = {
+        id : String(+todos.at(-1).id + 1) ?? "1", // bisa juga ditulis +todos.at(-1).id + 1) ?? 1
+        task: task,
+        status: status,
+      };
+      await fetch('http://localhost:3000/todos', { // const response =  bisa ditaruh didepan untuk pemanggilan
+        method: "POST",
+        body: JSON.stringify(newTodo),
+      })
+      console.log(newTodo); // {}
+      console.log(todos); // []
+      setTodos([...todos, newTodo]);
+    }
+
   return (
     <>
       <div className="p-2">
@@ -29,23 +48,25 @@ function App() {
         </div>
         <div className="flex w-full">
           <div className="card bg-base-300 rounded-box grid grow place-items-center p-3">
-            <form action="" className="flex flex-col gap-3">
-              <h2>Create Todo</h2>
+           {/* FORM CREATE */}
+            <form onSubmit={createTodo} action="" className="flex flex-col gap-3">
+              <h2>Create Todo </h2>
               <label className="input">
                 <span className="label">Task</span>
-                <input type="text" placeholder="Type your task here..." />
+                <input onChange={(e) => setTask(e.target.value)}
+                 value={task} type="text" placeholder="Type your task here..." />
               </label>
               <label className="select">
                 <span className="label">Status</span>
-                <select>
-                  <option selected disabled>Please select the task status</option>
-                  <option>OPEN</option>
-                  <option>ONGOING</option>
-                  <option>COMPLETED</option>
+                <select  value={status} onChange={(e) => setStatus(e.target.value)}>
+                  <option value="OPEN">OPEN</option>
+                  <option value="ONGOING">ONGOING</option>
+                  <option value="COMPLETED">COMPLETED</option>
                 </select>
               </label>
               <button className="btn btn-primary">Submit</button>
             </form>
+            {/* FORM CREATE END */}
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div className="card bg-base-300 rounded-box grid grow place-items-center p-3">
