@@ -51,17 +51,27 @@ function App() {
         method: "GET",
       });
       const foundTodo = await response.json();
-      console.log(foundTodo);
-
-      await fetch(`http://localhost:3000/todos/${foundTodo.id}`, {
-        method: "DELETE",
-      });
-
-      await fetchTodos();
       Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: `Successfully delete with id ${foundTodo.id}`,
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await fetch(`http://localhost:3000/todos/${foundTodo.id}`, {
+            method: "DELETE",
+          });
+
+          await fetchTodos();
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: `Successfully delete with id ${foundTodo.id}`,
+          });
+        }
       });
     } catch (error) {
       console.log(error);
