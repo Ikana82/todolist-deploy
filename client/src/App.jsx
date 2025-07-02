@@ -1,26 +1,26 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import TodoCard from "./components/TodoCard";
+import Swal from "sweetalert2";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
   const [status, setStatus] = useState("OPEN");
 
- 
-    async function fetchTodos() {
-      try {
-        const response = await fetch(`http://localhost:3000/todos`, {
-          method: "GET",
-        });
-        const result = await response.json();
-        console.log(result);
-        setTodos(result);
-      } catch (error) {
-        console.log(error);
-      }
+  async function fetchTodos() {
+    try {
+      const response = await fetch(`http://localhost:3000/todos`, {
+        method: "GET",
+      });
+      const result = await response.json();
+      console.log(result);
+      setTodos(result);
+    } catch (error) {
+      console.log(error);
     }
-     useEffect(() => {
+  }
+  useEffect(() => {
     fetchTodos();
   }, []);
 
@@ -48,19 +48,23 @@ function App() {
     console.log(id);
     try {
       const response = await fetch(`http://localhost:3000/todos/${id}`, {
-        method: "GET"
+        method: "GET",
       });
       const foundTodo = await response.json();
       console.log(foundTodo);
 
       await fetch(`http://localhost:3000/todos/${foundTodo.id}`, {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       await fetchTodos();
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: `Successfully delete with id ${foundTodo.id}`,
+      });
     } catch (error) {
       console.log(error);
-      
     }
   }
 
