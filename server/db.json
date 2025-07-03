@@ -7,7 +7,12 @@
     },
     {
       "id": "5",
-      "task": "Watching Tv",
+      "task": "Read a book (at lease 6 pages)",
+      "done": true
+    },
+    {
+      "id": "6",
+      "task": "Watching serial drama korea in Disney Hotstart",
       "done": false
     }
   ]
