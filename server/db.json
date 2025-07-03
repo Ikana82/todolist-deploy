@@ -1,19 +1,14 @@
 {
   "todos": [
     {
-      "id": "1",
-      "task": "Reading",
-      "status": "OPEN"
+      "id": "4",
+      "task": "Cleaning Bedroom",
+      "done": false
     },
     {
-      "id": "2",
-      "task": "Swimming",
-      "status": "ONGOING"
-    },
-    {
-      "id": "3",
-      "task": "Watching",
-      "status": "COMPLETED"
+      "id": "5",
+      "task": "Watching Tv",
+      "done": false
     }
   ]
 }
