@@ -1,14 +1,25 @@
 {
   "todos": [
     {
-      "id": "4",
-      "task": "Cleaning Bedroom",
+      "id": "1",
+      "task": "Belanja sayur dipasar",
+      "description": "Bawang merah, Lombok, Bawang putih, ketumbar",
+      "dueDate": "2025-02-21",
+      "time": "10:30 AM - 12:00 PM",
       "done": false
     },
     {
-      "id": "5",
-      "task": "Read a book (at lease 6 pages)",
+      "id": "2",
+      "task": "Memasak rendang",
+      "description": "Daging sapi 2kg, rempah-rempah, kayu manis",
+      "dueDate": "2025-02-11",
+      "time": "08:30 AM - 12:00 PM",
       "done": true
+    },
+    {
+      "id": "5",
+      "task": "Read a book (at least 6 pages)",
+      "done": false
     },
     {
       "id": "6",
