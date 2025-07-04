@@ -3,27 +3,17 @@
     {
       "id": "1",
       "task": "Belanja sayur dipasar",
-      "description": "Bawang merah, Lombok, Bawang putih, ketumbar",
+      "description": "Bawang merah, Lombok, Bawang putih, ketumbar, daun jeruk dan lengkuas",
       "dueDate": "2025-02-21",
       "time": "10:30 AM - 12:00 PM",
       "done": false
     },
     {
-      "id": "2",
-      "task": "Memasak rendang",
-      "description": "Daging sapi 2kg, rempah-rempah, kayu manis",
-      "dueDate": "2025-02-11",
-      "time": "08:30 AM - 12:00 PM",
-      "done": true
-    },
-    {
-      "id": "5",
-      "task": "Read a book (at least 6 pages)",
-      "done": false
-    },
-    {
-      "id": "6",
-      "task": "Watching serial drama korea in Disney Hotstart",
+      "id": "1751617936904",
+      "task": "Membaca Buku",
+      "description": "Baca minimal 5 halaman dan buat ringkasan materinya",
+      "dueDate": "2025-07-04",
+      "time": "16:32",
       "done": false
     }
   ]

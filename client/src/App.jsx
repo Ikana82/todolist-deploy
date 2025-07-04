@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import AddTask from "./components/AddTask";
+import TodoList from "./components/TodoList";
 import "./App.css";
-import TodoApp from "./components/TodoApp";
-import TodoCard from "./components/TodoCard";
 import Swal from "sweetalert2";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
+  const [description, setDescription] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [time, setTime] = useState("");
   const [editId, setEditId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const base_url = "http://localhost:3000/todos";
 
@@ -16,109 +21,168 @@ function App() {
     fetchTodos();
   }, []);
 
-  function startEdit(todo) {
-    setTask(todo.task);
-    setEditId(todo.id);
-  }
+  const completedCount = todos.filter((t) => t.done).length;
 
   async function fetchTodos() {
     try {
-      const response = await fetch(base_url);
-      const result = await response.json();
-      setTodos(result);
-    } catch (error) {
-      console.log(error);
+      const res = await fetch(base_url);
+      const data = await res.json();
+      setTodos(data);
+    } catch (err) {
+      console.error("Error fetching todos:", err);
     }
+  }
+
+  function resetForm() {
+    setTask("");
+    setDescription("");
+    setDueDate("");
+    setTime("");
+    setEditId(null);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const todoData = {
+      task,
+      description,
+      dueDate,
+      time,
+      done: false,
+    };
 
-    if (editId) {
-      // UPDATE MODE
-      try {
+    try {
+      if (editId) {
         await fetch(`${base_url}/${editId}`, {
           method: "PATCH",
-          body: JSON.stringify({ task }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(todoData),
         });
-        await fetchTodos();
-        setEditId(null);
-        setTask(""); // reset input
-      } catch (error) {
-        console.error("Failed to update:", error);
+      } else {
+        todoData.id = String(Date.now());
+        await fetch(base_url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(todoData),
+        });
       }
-    } else {
-      // CREATE MODE
-      const newTodo = {
-        id: todos.length > 0 ? String(+todos.at(-1).id + 1) : "1",
-        task,
-        done: false,
-      };
 
-      await fetch(base_url, {
-        method: "POST",
-        body: JSON.stringify(newTodo),
-      });
-
-      setTodos([...todos, newTodo]);
-      setTask("");
+      await fetchTodos();
+      resetForm();
+      setShowModal(false);
+    } catch (err) {
+      console.error("Error saving todo:", err);
     }
   }
 
   async function toggleDone(id) {
-    const todoToUpdate = todos.find((todo) => todo.id === id);
-    const updatedStatus = !todoToUpdate.done;
+    const todo = todos.find((t) => t.id === id);
+    if (!todo) return;
 
-    await fetch(`${base_url}/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify({ done: updatedStatus }),
-    });
-
-    fetchTodos(); // refresh list
+    try {
+      await fetch(`${base_url}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ done: !todo.done }),
+      });
+      fetchTodos();
+    } catch (err) {
+      console.error("Error toggling done:", err);
+    }
   }
 
   async function deleteTodo(id) {
-    Swal.fire({
+    const result = await Swal.fire({
       title: "Are you sure?",
+      text: "This task will be permanently deleted.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
+    });
+
+    if (result.isConfirmed) {
+      try {
         await fetch(`${base_url}/${id}`, {
           method: "DELETE",
         });
-        fetchTodos();
+        await fetchTodos();
+
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your task has been deleted.",
+          icon: "success",
+          timer: 1200,
+          showConfirmButton: false,
+        });
+      } catch (err) {
+        console.error("Error deleting todo:", err);
+        Swal.fire("Oops!", "Something went wrong.", "error");
       }
-    });
+    }
   }
 
-  async function removeChecked() {
-    const completed = todos.filter((todo) => todo.done);
-    for (let todo of completed) {
-      await fetch(`${base_url}/${todo.id}`, {
-        method: "DELETE",
-      });
-    }
-    fetchTodos();
+  function startEdit(todo) {
+    setTask(todo.task);
+    setDescription(todo.description || "");
+    setDueDate(todo.dueDate || "");
+    setTime(todo.time || "");
+    setEditId(todo.id);
+    setShowModal(true);
   }
 
   return (
-    <>
-      <TodoApp
-        todos={todos}
-        task={task}
-        setTask={setTask}
-        handleSubmit={handleSubmit} // Ganti dari createTodo
-        toggleDone={toggleDone}
-        deleteTodo={deleteTodo}
-        removeChecked={removeChecked}
-        editId={editId}
-        startEdit={startEdit}
-      />
-    </>
+    <div className="min-h-screen bg-blue-100 p-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold text-gray-700">Todo List</h1>
+          <button
+            onClick={() => {
+              setShowModal(true);
+              resetForm();
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            + Add New Task
+          </button>
+        </div>
+
+        <p className="text-gray-600 mb-6">
+          <FontAwesomeIcon
+            icon={faSquareCheck}
+            className="text-green-600 mr-2"
+          />
+          {completedCount} of {todos.length} task(s) completed
+        </p>
+
+        <TodoList
+          todos={todos}
+          toggleDone={toggleDone}
+          deleteTodo={deleteTodo}
+          startEdit={startEdit}
+        />
+      </div>
+
+      {showModal && (
+        <AddTask
+          task={task}
+          setTask={setTask}
+          description={description}
+          setDescription={setDescription}
+          dueDate={dueDate}
+          setDueDate={setDueDate}
+          time={time}
+          setTime={setTime}
+          handleSubmit={handleSubmit}
+          onCancel={() => {
+            setShowModal(false);
+            resetForm();
+          }}
+          editId={editId}
+        />
+      )}
+    </div>
   );
 }
 

@@ -1,31 +1,43 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
 
 function TodoCard({ todo, toggleDone, deleteTodo, startEdit }) {
   return (
-    <li className="flex items-center justify-between bg-gray-100 rounded px-2 py-1">
-      <div className="flex items-center gap-2">
+    <div className="bg-white text-gray-700 shadow-sm p-3 rounded-md mb-2 flex justify-between items-start">
+      <div>
         <input
           type="checkbox"
           checked={todo.done}
           onChange={() => toggleDone(todo.id)}
+          className="mr-2"
         />
-        <span className={`${todo.done ? "line-through text-gray-400" : ""}`}>
-          {todo.task}
+        <span
+          className={`font-semibold ${
+            todo.done ? " text-gray-700 line-through" : ""
+          }`}
+        >
+          {todo.task || "(No Title)"}
         </span>
+        {todo.description && (
+          <p className="text-sm text-gray-500">{todo.description}</p>
+        )}
+        {todo.dueDate && (
+          <p className="text-xs text-gray-400">Due: {todo.dueDate}</p>
+        )}
+        {todo.time && (
+          <p className="text-xs text-gray-400">Time: {todo.time}</p>
+        )}
       </div>
       <div className="flex gap-2">
-        <button onClick={() => startEdit(todo)}>
+        <button onClick={() => startEdit(todo)} className="text-blue-500">
           <FontAwesomeIcon icon={faPencil} />
         </button>
-        <button
-          onClick={() => deleteTodo(todo.id)}
-          className="text-gray-500 hover:text-red-600"
-        >
+        <button onClick={() => deleteTodo(todo.id)} className="text-red-500">
           <FontAwesomeIcon icon={faTrash} />
         </button>
       </div>
-    </li>
+    </div>
   );
 }
 
