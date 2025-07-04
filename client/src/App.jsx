@@ -10,7 +10,7 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [editId, setEditId] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -36,7 +36,7 @@ function App() {
   function resetForm() {
     setTask("");
     setDescription("");
-    setDueDate("");
+    setDate("");
     setTime("");
     setEditId(null);
   }
@@ -46,7 +46,7 @@ function App() {
     const todoData = {
       task,
       description,
-      dueDate,
+      date,
       time,
       done: false,
     };
@@ -91,6 +91,20 @@ function App() {
     }
   }
 
+  async function removeChecked() {
+    try {
+      const checkedTodos = todos.filter((todo) => todo.done);
+      await Promise.all(
+        checkedTodos.map((todo) =>
+          fetch(`${base_url}/${todo.id}`, { method: "DELETE" })
+        )
+      );
+      await fetchTodos();
+    } catch (err) {
+      console.error("Error removing checked todos:", err);
+    }
+  }
+
   async function deleteTodo(id) {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -126,63 +140,79 @@ function App() {
   function startEdit(todo) {
     setTask(todo.task);
     setDescription(todo.description || "");
-    setDueDate(todo.dueDate || "");
+    setDate(todo.date || "");
     setTime(todo.time || "");
     setEditId(todo.id);
     setShowModal(true);
   }
 
   return (
-    <div className="min-h-screen bg-blue-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold text-gray-700">Todo List</h1>
-          <button
-            onClick={() => {
-              setShowModal(true);
-              resetForm();
-            }}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            + Add New Task
-          </button>
+    <>
+      <div className="min-h-screen  bg-black text-[#ebecf2] p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold text-[#ebecf2]">Todo List</h1>
+            <button
+              onClick={() => {
+                setShowModal(true);
+                resetForm();
+              }}
+              className="bg-[#060ae2] text-[#ebecf2] px-4 py-2 rounded hover:bg-[#3539fb]"
+            >
+              + Add New Task
+            </button>
+          </div>
+
+          {todos.length > 0 && completedCount > 0 && (
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mt-6 mb-6">
+              <div className="w-full md:w-3/4 bg-gray-700 rounded h-8 overflow-hidden">
+                <div
+                  className="bg-[#060ae2] h-full text-[#ebecf2] text-sm flex items-center justify-center transition-all duration-300"
+                  style={{
+                    width: `${(completedCount / todos.length) * 100}%`,
+                  }}
+                >
+                  {completedCount} of {todos.length} task(s) completed
+                </div>
+              </div>
+
+              <button
+                onClick={removeChecked}
+                className="bg-red-600 text-white text-sm px-4 py-2 rounded hover:bg-red-700 transition-colors"
+              >
+                Remove Checked
+              </button>
+            </div>
+          )}
+
+          <TodoList
+            todos={todos}
+            toggleDone={toggleDone}
+            deleteTodo={deleteTodo}
+            startEdit={startEdit}
+          />
         </div>
 
-        <p className="text-gray-600 mb-6">
-          <FontAwesomeIcon
-            icon={faSquareCheck}
-            className="text-green-600 mr-2"
+        {showModal && (
+          <AddTask
+            task={task}
+            setTask={setTask}
+            description={description}
+            setDescription={setDescription}
+            date={date}
+            setDate={setDate}
+            time={time}
+            setTime={setTime}
+            handleSubmit={handleSubmit}
+            onCancel={() => {
+              setShowModal(false);
+              resetForm();
+            }}
+            editId={editId}
           />
-          {completedCount} of {todos.length} task(s) completed
-        </p>
-
-        <TodoList
-          todos={todos}
-          toggleDone={toggleDone}
-          deleteTodo={deleteTodo}
-          startEdit={startEdit}
-        />
+        )}
       </div>
-
-      {showModal && (
-        <AddTask
-          task={task}
-          setTask={setTask}
-          description={description}
-          setDescription={setDescription}
-          dueDate={dueDate}
-          setDueDate={setDueDate}
-          time={time}
-          setTime={setTime}
-          handleSubmit={handleSubmit}
-          onCancel={() => {
-            setShowModal(false);
-            resetForm();
-          }}
-          editId={editId}
-        />
-      )}
-    </div>
+    </>
   );
 }
 

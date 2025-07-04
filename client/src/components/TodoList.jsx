@@ -2,10 +2,11 @@ import TodoCard from "./TodoCard";
 
 function TodoList({ todos, toggleDone, deleteTodo, startEdit }) {
   if (todos.length === 0)
-    return <p className="text-center text-gray-500">No tasks found.</p>;
+    return <p className="text-center text-[#ebecf2]">No tasks found.</p>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
       {todos.map((todo) => (
         <TodoCard
           key={todo.id}
@@ -16,6 +17,7 @@ function TodoList({ todos, toggleDone, deleteTodo, startEdit }) {
         />
       ))}
     </div>
+    </>
   );
 }
 

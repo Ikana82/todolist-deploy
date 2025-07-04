@@ -1,19 +1,27 @@
 {
   "todos": [
     {
-      "id": "1",
-      "task": "Belanja sayur dipasar",
-      "description": "Bawang merah, Lombok, Bawang putih, ketumbar, daun jeruk dan lengkuas",
-      "dueDate": "2025-02-21",
-      "time": "10:30 AM - 12:00 PM",
+      "id": "1751645576090",
+      "task": "Hiburan",
+      "description": "Nonton film jurassic worlt ",
+      "date": "2025-07-05",
+      "time": "18:12",
       "done": false
     },
     {
-      "id": "1751617936904",
-      "task": "Membaca Buku",
-      "description": "Baca minimal 5 halaman dan buat ringkasan materinya",
-      "dueDate": "2025-07-04",
-      "time": "16:32",
+      "id": "1751645609149",
+      "task": "Kondangan",
+      "description": "Acara sepupu",
+      "date": "2025-08-04",
+      "time": "10:13",
+      "done": false
+    },
+    {
+      "id": "1751645650492",
+      "task": "Masakan Korea",
+      "description": "Belajar membuat gimbab dan juga onigiri isi tuna spicy",
+      "date": "2025-07-26",
+      "time": "09:14",
       "done": false
     }
   ]

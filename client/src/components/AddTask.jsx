@@ -10,8 +10,8 @@ function AddTask({
   setTask,
   description,
   setDescription,
-  dueDate,
-  setDueDate,
+  date,
+  setDate,
   time,
   setTime,
   handleSubmit,
@@ -22,8 +22,9 @@ function AddTask({
   const timeRef = useRef(null);
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white text-gray-700 p-6 rounded shadow-md w-full max-w-md">
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+      <div className="bg-[#12151c] text-[#ebecf2] p-6 rounded shadow-md w-full max-w-md border-gray-300">
         <h2 className="text-xl font-semibold mb-4">
           {editId ? "Edit Task" : "Add New Task"}
         </h2>
@@ -46,23 +47,15 @@ function AddTask({
             className="w-full border p-2 rounded"
           ></textarea>
 
-          {/* Due Date */}
+          {/*  Date */}
           <div className="relative">
             <input
               ref={dateRef}
               type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-              className="w-full border border-gray-300 p-2 pr-12 rounded focus:outline-none"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full border border-gray-300 p-2 pr-4 rounded focus:outline-none"
             />
-            <button
-              type="button"
-              onClick={() => dateRef.current?.showPicker()}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-              tabIndex={-1}
-            >
-              <FontAwesomeIcon icon={faCalendarDays} />
-            </button>
           </div>
 
           {/* Time */}
@@ -72,16 +65,8 @@ function AddTask({
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="w-full border border-gray-300 p-2 pr-12 rounded focus:outline-none"
+              className="w-full border border-gray-300 p-2 pr-4 rounded focus:outline-none"
             />
-            <button
-              type="button"
-              onClick={() => timeRef.current?.showPicker()}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-              tabIndex={-1}
-            >
-              <FontAwesomeIcon icon={faClock} />
-            </button>
           </div>
 
           {/* Action Buttons */}
@@ -89,13 +74,13 @@ function AddTask({
             <button
               type="button"
               onClick={onCancel}
-              className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+              className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="bg-[#060ae2] text-[#ebecf2] px-4 py-2 rounded hover:bg-[#3539fb]"
             >
               {editId ? "Update" : "Add"}
             </button>
@@ -103,6 +88,7 @@ function AddTask({
         </form>
       </div>
     </div>
+    </>
   );
 }
 
