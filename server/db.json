@@ -1,28 +1,76 @@
 {
   "todos": [
     {
-      "id": "1751645576090",
-      "task": "Hiburan",
-      "description": "Nonton film jurassic worlt ",
-      "date": "2025-07-05",
-      "time": "18:12",
+      "id": "4",
+      "task": "Pastikan membuat web responsive & menggunakan styling (Tailwind/SCSS)",
+      "description": "",
+      "date": "",
+      "time": "",
       "done": false
     },
     {
-      "id": "1751645609149",
-      "task": "Kondangan",
-      "description": "Acara sepupu",
-      "date": "2025-08-04",
-      "time": "10:13",
+      "id": "5",
+      "task": "Testing seluruh fitur yang telah dikerjakan",
+      "description": "",
+      "date": "",
+      "time": "",
       "done": false
     },
     {
-      "id": "1751645650492",
-      "task": "Masakan Korea",
-      "description": "Belajar membuat gimbab dan juga onigiri isi tuna spicy",
-      "date": "2025-07-26",
-      "time": "09:14",
+      "id": "6",
+      "task": "Lakukan code review ",
+      "description": "",
+      "date": "",
+      "time": "",
       "done": false
+    },
+    {
+      "id": "7",
+      "task": "Cek dan benahi struktur kode (clean code)",
+      "description": "",
+      "date": "",
+      "time": "",
+      "done": false
+    },
+    {
+      "id": "8",
+      "task": "Commit hasil dan push ke repository",
+      "description": "",
+      "date": "",
+      "time": "",
+      "done": true
+    },
+    {
+      "id": "9",
+      "task": "Review materi hari sebelumnya (30 menit)",
+      "description": "",
+      "date": "",
+      "time": "",
+      "done": false
+    },
+    {
+      "id": "10",
+      "task": "Buat catatan singkat dari materi hari ini",
+      "description": "",
+      "date": "",
+      "time": "",
+      "done": false
+    },
+    {
+      "id": "11",
+      "task": "Minta feedback dari mentor atau teman",
+      "description": "",
+      "date": "",
+      "time": "",
+      "done": false
+    },
+    {
+      "id": "12",
+      "task": "Cek dan review ulang hasil project",
+      "description": "",
+      "date": "",
+      "time": "",
+      "done": true
     }
   ]
 }
