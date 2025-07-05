@@ -16,7 +16,6 @@ function App() {
   const [todos, setTodos] = useState([]); // Semua data todo
   const [task, setTask] = useState(""); // Input task
   const [editId, setEditId] = useState(null); // ID task yang sedang diedit
-  const [showModal, setShowModal] = useState(false); // Modal form (tidak dipakai saat ini)
   const [currentPage, setCurrentPage] = useState(1); // Halaman saat ini
   const tasksPerPage = 6; // Jumlah task per halaman
 
@@ -50,13 +49,13 @@ function App() {
 
   // Submit task (add atau update)
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault(); // Supaya tidak ke refresh
 
     const todoData = {
       task,
-      description,
-      date,
-      time,
+      // description,
+      // date,
+      // time,
       done: false, // Task baru selalu belum selesai
     };
 
@@ -156,7 +155,8 @@ function App() {
           showConfirmButton: false,
         });
       } catch (err) {
-        console.error("Error deleting todo:", err);
+         console.error("Error deleting todo:", err); 
+        // <Alert severity="error">Error deleting todo</Alert> coba pakai alert
         Swal.fire("Oops!", "Something went wrong.", "error");
       }
     }
