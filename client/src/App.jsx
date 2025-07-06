@@ -198,123 +198,125 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen px-4 md:px-10 py-6 bg-[#4196bc]">
-      <div className="max-w-4xl mx-auto bg-neutral-50 rounded-lg p-5 shadow">
-        {/* Judul Aplikasi */}
-        <h1 className="text-center text-2xl font-extrabold text-neutral-600 mb-4">
-          TODO LIST
-        </h1>
+    <>
+      <div className="min-h-screen px-4 md:px-10 py-7 bg-[#4196bc]">
+        <div className="max-w-4xl mx-auto bg-neutral-50 rounded-lg p-5 shadow">
+          {/* Judul Aplikasi */}
+          <h1 className="text-center text-2xl font-extrabold text-neutral-600 mb-4">
+            TODO LIST
+          </h1>
 
-        {/* Form Input Task */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col md:flex-row gap-2 mb-4"
-        >
-          <input
-            type="text"
-            ref={inputRef}
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
-            placeholder="What needs to be done?"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-neutral-600"
-          />
-          <button
-            type="submit"
-            className="w-full md:w-auto bg-[#4196bc] text-white px-4 py-2 rounded hover:bg-[#3580a2]"
+          {/* Form Input Task */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col md:flex-row gap-2 mb-4"
           >
-            {editId ? "Update" : "+"} {/* Tombol untuk tambah / edit */}
-          </button>
-        </form>
-
-        {/* Loading Fetching */}
-        {loading && (
-          <div className="flex justify-center items-center py-6">
-            <span className="loading loading-spinner text-info"></span>
-          </div>
-        )}
-
-        {/* Daftar Task */}
-        <ul className="space-y-2 mb-4">
-          {currentTasks.map((todo) => (
-            <li
-              key={todo.id}
-              className={`p-2 rounded flex flex-col md:flex-row md:justify-between md:items-center gap-2 ${
-                todo.done ? "bg-blue-100" : "bg-sky-50" // Warna berdasarkan status done
-              }`}
+            <input
+              type="text"
+              ref={inputRef}
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+              placeholder="What needs to be done?"
+              className="w-full border border-gray-300 rounded px-3 py-2 text-neutral-600"
+            />
+            <button
+              type="submit"
+              className="w-full md:w-auto bg-[#4196bc] text-white px-4 py-2 rounded hover:bg-[#3580a2]"
             >
-              <span
-                className={`break-words w-full md:w-auto text-[#4196bc] ${
-                  todo.done ? "line-through opacity-60" : "" // Style task selesai
+              {editId ? "Update" : "+"} {/* Tombol untuk tambah / edit */}
+            </button>
+          </form>
+
+          {/* Loading Fetching */}
+          {loading && (
+            <div className="flex justify-center items-center py-6">
+              <span className="loading loading-spinner text-info"></span>
+            </div>
+          )}
+
+          {/* Daftar Task */}
+          <ul className="space-y-2 mb-4">
+            {currentTasks.map((todo) => (
+              <li
+                key={todo.id}
+                className={`p-2 rounded flex flex-col md:flex-row md:justify-between md:items-center gap-2 ${
+                  todo.done ? "bg-blue-100" : "bg-sky-50" // Warna berdasarkan status done
                 }`}
               >
-                {todo.task}
+                <span
+                  className={`break-words w-full md:w-auto text-[#4196bc] ${
+                    todo.done ? "line-through opacity-60" : "" // Style task selesai
+                  }`}
+                >
+                  {todo.task}
+                </span>
+
+                {/* Tombol aksi: done, edit, delete */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => toggleDone(todo.id)}
+                    className="text-green-600 hover:text-green-800"
+                    title="Mark as Done"
+                  >
+                    <FontAwesomeIcon icon={faSquareCheck} />
+                  </button>
+                  <button
+                    onClick={() => startEdit(todo)}
+                    className="text-yellow-600 hover:text-yellow-800"
+                    title="Edit"
+                  >
+                    <FontAwesomeIcon icon={faPencil} />
+                  </button>
+                  <button
+                    onClick={() => deleteTodo(todo.id)}
+                    className="text-red-600 hover:text-red-800"
+                    title="Delete"
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mb-4">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                className="bg-[#4196bc] px-3 py-1 rounded disabled:opacity-50"
+                disabled={currentPage === 1}
+              >
+                Prev
+              </button>
+              <span className="text-gray-300 text-sm">
+                Page {currentPage} of {totalPages}
               </span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                className="bg-[#4196bc] px-3 py-1 rounded disabled:opacity-50"
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
 
-              {/* Tombol aksi: done, edit, delete */}
-              <div className="flex gap-2">
-                <button
-                  onClick={() => toggleDone(todo.id)}
-                  className="text-green-600 hover:text-green-800"
-                  title="Mark as Done"
-                >
-                  <FontAwesomeIcon icon={faSquareCheck} />
-                </button>
-                <button
-                  onClick={() => startEdit(todo)}
-                  className="text-yellow-600 hover:text-yellow-800"
-                  title="Edit"
-                >
-                  <FontAwesomeIcon icon={faPencil} />
-                </button>
-                <button
-                  onClick={() => deleteTodo(todo.id)}
-                  className="text-red-600 hover:text-red-800"
-                  title="Delete"
-                >
-                  <FontAwesomeIcon icon={faTrashCan} />
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-4 mb-4">
+          {/* Footer: jumlah task selesai dan tombol hapus yang sudah selesai */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mt-4">
+            <div className="bg-lime-400 px-4 py-2 rounded text-stone-700 text-sm font-medium">
+              {completedCount} of {todos.length} task(s) completed
+            </div>
             <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              className="bg-[#4196bc] px-3 py-1 rounded disabled:opacity-50"
-              disabled={currentPage === 1}
+              onClick={removeChecked}
+              className="bg-[#4196bc] text-white px-4 py-2 rounded hover:bg-[#3580a2]"
             >
-              Prev
-            </button>
-            <span className="text-gray-300 text-sm">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              className="bg-[#4196bc] px-3 py-1 rounded disabled:opacity-50"
-              disabled={currentPage === totalPages}
-            >
-              Next
+              Remove Checked
             </button>
           </div>
-        )}
-
-        {/* Footer: jumlah task selesai dan tombol hapus yang sudah selesai */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mt-4">
-          <div className="bg-lime-400 px-4 py-2 rounded text-stone-700 text-sm font-medium">
-            {completedCount} of {todos.length} task(s) completed
-          </div>
-          <button
-            onClick={removeChecked}
-            className="bg-[#4196bc] text-white px-4 py-2 rounded hover:bg-[#3580a2]"
-          >
-            Remove Checked
-          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
