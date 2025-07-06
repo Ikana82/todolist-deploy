@@ -1,5 +1,5 @@
 // Import React Hooks
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // Import icon & style
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,8 +18,9 @@ function App() {
   const [editId, setEditId] = useState(null); // ID task yang sedang diedit
   const [currentPage, setCurrentPage] = useState(1); // Halaman saat ini
   const tasksPerPage = 6; // Jumlah task per halaman
+  const inputRef = useRef(null); // Mengatur input untuk auto focus
 
-  const base_url = "http://localhost:3000/todos"; // URL API
+  const base_url = "https://skitter-deeply-airbus.glitch.me/todos"; // URL API
 
   // Ambil data todo saat komponen pertama kali di-render
   useEffect(() => {
@@ -40,6 +41,7 @@ function App() {
     try {
       const res = await fetch(base_url);
       const data = await res.json();
+      console.log("Fetching todos:", data); // Mengecek apakah todos glitch berhasil atau tidak
       setTodos(data); // Simpan ke state
       setCurrentPage(1); // Reset ke halaman pertama
     } catch (err) {
@@ -50,6 +52,18 @@ function App() {
   // Submit task (add atau update)
   async function handleSubmit(e) {
     e.preventDefault(); // Supaya tidak ke refresh
+
+    // Cek jika input kosong
+    if (!task.trim()) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops!",
+        text: "Tell me what you have to do",
+      }).then(() => {
+        inputRef.current?.focus(); // Arahkan fokus kembali ke input setelah klik OK
+      });
+      return;
+    }
 
     const todoData = {
       task,
@@ -155,7 +169,7 @@ function App() {
           showConfirmButton: false,
         });
       } catch (err) {
-         console.error("Error deleting todo:", err); 
+        console.error("Error deleting todo:", err);
         // <Alert severity="error">Error deleting todo</Alert> coba pakai alert
         Swal.fire("Oops!", "Something went wrong.", "error");
       }
@@ -194,11 +208,11 @@ function App() {
         >
           <input
             type="text"
+            ref={inputRef}
             value={task}
             onChange={(e) => setTask(e.target.value)}
             placeholder="What needs to be done?"
             className="w-full border border-gray-300 rounded px-3 py-2 text-neutral-600"
-            required
           />
           <button
             type="submit"
