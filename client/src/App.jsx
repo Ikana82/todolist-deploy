@@ -19,6 +19,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1); // Halaman saat ini
   const tasksPerPage = 6; // Jumlah task per halaman
   const inputRef = useRef(null); // Mengatur input untuk auto focus
+  const [loading, setLoading] = useState(false); // Menambahkan loading state
 
   const base_url = "https://skitter-deeply-airbus.glitch.me/todos"; // URL API
 
@@ -38,6 +39,7 @@ function App() {
 
   // Fetch semua task dari server
   async function fetchTodos() {
+    setLoading(true); // Mulai loading
     try {
       const res = await fetch(base_url);
       const data = await res.json();
@@ -46,6 +48,8 @@ function App() {
       setCurrentPage(1); // Reset ke halaman pertama
     } catch (err) {
       console.error("Error fetching todos:", err);
+    } finally {
+      setLoading(false); // Selesai loading
     }
   }
 
@@ -221,6 +225,13 @@ function App() {
             {editId ? "Update" : "+"} {/* Tombol untuk tambah / edit */}
           </button>
         </form>
+
+        {/* Loading Fetching */}
+        {loading && (
+          <div className="flex justify-center items-center py-6">
+            <span className="loading loading-spinner text-info"></span>
+          </div>
+        )}
 
         {/* Daftar Task */}
         <ul className="space-y-2 mb-4">
