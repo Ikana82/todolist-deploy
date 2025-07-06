@@ -22,7 +22,8 @@ function App() {
   const inputRef = useRef(null); // Mengatur input untuk auto focus
   const [loading, setLoading] = useState(false); // Menambahkan loading state
 
-  const base_url = "https://skitter-deeply-airbus.glitch.me/todos"; // URL API
+  // const base_url = "http://localhost:3000/todos"; // URL API
+ const base_url = "https://skitter-deeply-airbus.glitch.me/todos"; // URL API
 
   // Ambil data todo saat komponen pertama kali di-render
   useEffect(() => {
@@ -208,8 +209,8 @@ function App() {
 
   return (
     <>
-      <div className="min-h-screen px-4 md:px-10 py-7 bg-[#4196bc]">
-        <div className="max-w-4xl mx-auto bg-neutral-50 rounded-lg p-5 shadow">
+      <div className="flex justify-center min-h-screen px-4 md:px-10 py-7 bg-[#4196bc]">
+        <div className="max-w-4xl min-w-auto mx-auto bg-neutral-50 rounded-lg p-5 shadow">
           {/* Judul Aplikasi */}
           <h1 className="text-center text-2xl font-extrabold text-neutral-600 mb-4">
             TODO LIST
@@ -218,7 +219,7 @@ function App() {
           {/* Form Input Task */}
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col md:flex-row gap-2 mb-4"
+            className="flex md:flex-row gap-2 mb-4"
           >
             <input
               type="text"
@@ -284,7 +285,7 @@ function App() {
                 </span>
 
                 {/* Tombol aksi: done, edit, delete */}
-                <div className="flex gap-2">
+                <div className="flex gap-2 self-end">
                   <button
                     onClick={() => toggleDone(todo.id)}
                     className="text-green-600 hover:text-green-800"
@@ -313,7 +314,7 @@ function App() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-4 mb-4">
+            <div className="flex justify-center items-center gap-4 my-6">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 className="bg-[#4196bc] px-3 py-1 rounded disabled:opacity-50"
@@ -335,7 +336,7 @@ function App() {
           )}
 
           {/* Footer: jumlah task selesai dan tombol hapus yang sudah selesai */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 mt-4">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-center gap-4 my-6">
             <div className="bg-lime-400 px-4 py-2 rounded text-stone-700 text-sm font-medium">
               {completedCount} of {todos.length} task(s) completed
             </div>
