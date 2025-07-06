@@ -7,6 +7,7 @@ import {
   faSquareCheck,
   faPencil,
   faTrashCan,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import "./App.css";
 import Swal from "sweetalert2";
@@ -26,6 +27,7 @@ function App() {
   // Ambil data todo saat komponen pertama kali di-render
   useEffect(() => {
     fetchTodos();
+    inputRef.current?.focus(); // Arahkan fokus kembali ke input setelah klik OK
   }, []);
 
   // Hitung jumlah task yang sudah selesai
@@ -71,14 +73,14 @@ function App() {
 
     const todoData = {
       task,
-      // description,
-      // date,
-      // time,
       done: false, // Task baru selalu belum selesai
     };
 
+    // Pengaturan Alert untuk update
+    const isEditing = !!editId; // simpan dulu status nya dan lihat apakah sedang edit
+
     try {
-      if (editId) {
+      if (isEditing) {
         // Edit task
         await fetch(`${base_url}/${editId}`, {
           method: "PATCH",
@@ -97,9 +99,19 @@ function App() {
         });
       }
 
-      await fetchTodos(); // Refresh data
-      resetForm(); // Reset form
-      setShowModal(false); // Tutup modal jika aktif
+      await fetchTodos(); // Refresh data todos
+      resetForm(); // Reset form input
+      // setEditId(null); // Keluar dari mode edit
+
+      // SweetAlert setelah berhasil tambah atau update
+      Swal.fire({
+        icon: "success",
+        title: isEditing ? "Updated!" : "Added!",
+        text: isEditing ? "Task has been updated." : "Task has been added.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+      inputRef.current?.focus(); // Fokus ke input lagi
     } catch (err) {
       console.error("Error saving todo:", err);
     }
@@ -108,9 +120,6 @@ function App() {
   // Reset form input
   function resetForm() {
     setTask("");
-    setDescription("");
-    setDate("");
-    setTime("");
     setEditId(null);
   }
 
@@ -183,11 +192,11 @@ function App() {
   // Mulai mode edit task
   function startEdit(todo) {
     setTask(todo.task);
-    setDescription(todo.description || "");
-    setDate(todo.date || "");
-    setTime(todo.time || "");
+    // setDescription(todo.description || "");
+    // setDate(todo.date || "");
+    // setTime(todo.time || "");
     setEditId(todo.id);
-    setShowModal(true); // opsional, bisa diabaikan
+    inputRef.current?.focus(); // langsung arahkan ke input saat edit
   }
 
   // Pindah halaman task
@@ -219,12 +228,35 @@ function App() {
               placeholder="What needs to be done?"
               className="w-full border border-gray-300 rounded px-3 py-2 text-neutral-600"
             />
-            <button
-              type="submit"
-              className="w-full md:w-auto bg-[#4196bc] text-white px-4 py-2 rounded hover:bg-[#3580a2]"
-            >
-              {editId ? "Update" : "+"} {/* Tombol untuk tambah / edit */}
-            </button>
+
+            {/* Bungkus tombol submit dan cancel di sini */}
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="bg-[#4196bc] text-white px-4 py-2 rounded hover:bg-[#3580a2]"
+              >
+                {editId ? (
+                  <>
+                    <FontAwesomeIcon icon={faPencil} className="mr-1" />
+                    Update
+                  </>
+                ) : (
+                  <span className="text-xl font-bold">+</span>
+                )}
+              </button>
+
+              {/* Tampilkan tombol Cancel hanya saat editing */}
+              {editId && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                >
+                  <FontAwesomeIcon icon={faXmark} className="mr-1" />
+                  Cancel
+                </button>
+              )}
+            </div>
           </form>
 
           {/* Loading Fetching */}
