@@ -38,11 +38,11 @@
       "description": "",
       "date": "",
       "time": "",
-      "done": true
+      "done": false
     },
     {
       "id": "9",
-      "task": "Review materi hari sebelumnya (30 menit)",
+      "task": "Review materi hari sebelumnya (40 menit)",
       "description": "",
       "date": "",
       "time": "",
@@ -51,22 +51,6 @@
     {
       "id": "10",
       "task": "Buat catatan singkat dari materi hari ini",
-      "description": "",
-      "date": "",
-      "time": "",
-      "done": false
-    },
-    {
-      "id": "11",
-      "task": "Minta feedback dari mentor atau teman",
-      "description": "",
-      "date": "",
-      "time": "",
-      "done": false
-    },
-    {
-      "id": "12",
-      "task": "Cek dan review ulang hasil project",
       "description": "",
       "date": "",
       "time": "",

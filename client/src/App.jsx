@@ -23,7 +23,7 @@ function App() {
   const [loading, setLoading] = useState(false); // Menambahkan loading state
 
   // const base_url = "http://localhost:3000/todos"; // URL API
- const base_url = "https://skitter-deeply-airbus.glitch.me/todos"; // URL API
+  const base_url = "https://skitter-deeply-airbus.glitch.me/todos"; // URL API
 
   // Ambil data todo saat komponen pertama kali di-render
   useEffect(() => {
@@ -209,18 +209,15 @@ function App() {
 
   return (
     <>
-      <div className="flex justify-center min-h-screen px-4 md:px-10 py-7 bg-[#4196bc]">
-        <div className="max-w-4xl min-w-auto mx-auto bg-neutral-50 rounded-lg p-5 shadow">
+      <div className="min-h-screen px-4 md:px-10 py-6 bg-[#4196bc]">
+        <div className="max-w-4xl mx-auto bg-neutral-50 rounded-lg p-5 shadow">
           {/* Judul Aplikasi */}
           <h1 className="text-center text-2xl font-extrabold text-neutral-600 mb-4">
             TODO LIST
           </h1>
 
           {/* Form Input Task */}
-          <form
-            onSubmit={handleSubmit}
-            className="flex md:flex-row gap-2 mb-4"
-          >
+          <form onSubmit={handleSubmit} className="flex md:flex-row gap-2 mb-4">
             <input
               type="text"
               ref={inputRef}
@@ -336,7 +333,7 @@ function App() {
           )}
 
           {/* Footer: jumlah task selesai dan tombol hapus yang sudah selesai */}
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-center gap-4 my-6">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-center gap-4">
             <div className="bg-lime-400 px-4 py-2 rounded text-stone-700 text-sm font-medium">
               {completedCount} of {todos.length} task(s) completed
             </div>
